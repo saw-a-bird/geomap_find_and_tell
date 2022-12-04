@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"></TextView>
+
+        <EditText
+            android:id="@+id/name_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="30sp"
+            android:background="@drawable/rectangle"
+            android:hint="Name"
+            android:padding="10sp"
+            android:textColorHint="@color/black">
+
+        </EditText>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Family Name"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"></TextView>
+
+        <EditText
+            android:id="@+id/familyname_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="30sp"
+            android:background="@drawable/rectangle"
+            android:hint="Family Name"
+            android:padding="10sp"
+            android:textColorHint="@color/black">
+
+        </EditText>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Country and City"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"></TextView>
+
+        <EditText
+            android:id="@+id/countryandcity_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rectangle"
+            android:hint="Country, City"
+            android:padding="10sp"
+            android:textColorHint="@color/black">
+
+        </EditText>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/next_tab_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rectanglev2"
+            android:fontFamily="@font/robotoslab"
+            android:text="Next"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="italic|bold"></androidx.appcompat.widget.AppCompatButton>
+    </LinearLayout>
+</FrameLayout>

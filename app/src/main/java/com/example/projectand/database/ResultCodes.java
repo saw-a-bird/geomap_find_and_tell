@@ -1,0 +1,13 @@
+package com.example.projectand.database;
+
+public enum ResultCodes {
+    SUCCESS,
+    ERROR_AUTH_SAVE,
+    ERROR_AUTH_CREATE,
+    ERROR_LOGIN,
+    ERROR_USER_GET_DATA,
+    ERROR_USER_NOT_AUTHENTICATED,
+    ERROR_TASK_EXECUTION_ERROR,
+    ERROR_TASK_INTERRUPTED,
+    ERROR_TASK_UNKNOWN_EXCEPTION
+}
