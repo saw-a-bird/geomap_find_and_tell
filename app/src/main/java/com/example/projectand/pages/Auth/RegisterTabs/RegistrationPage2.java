@@ -20,14 +20,14 @@ public class RegistrationPage2 extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_p2, container, false );
 
-        email =view.findViewById(R.id.email_form);
+        email = view.findViewById(R.id.email_form);
         password = view. findViewById(R.id.password_form);
         repassword = view.findViewById(R.id.repassword_form);
 
         goback = view.findViewById(R.id.go_back);
         goback.setOnClickListener(this);
 
-        finish= view.findViewById(R.id.finish_btn);
+        finish = view.findViewById(R.id.finish_btn);
         finish.setOnClickListener(this);
 
         return view;
@@ -54,5 +54,8 @@ public class RegistrationPage2 extends Fragment implements View.OnClickListener 
         }
     }
 
+    public Button getSubmitBtn() {
+        return finish;
+    }
     // other events
 }

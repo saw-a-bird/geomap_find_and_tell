@@ -37,7 +37,7 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="10sp"
-            android:textColorHint="@color/black">
+            android:textColorHint="@color/hint">
 
         </EditText>
 
@@ -68,7 +68,7 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="10sp"
-            android:textColorHint="@color/black">
+            android:textColorHint="@color/hint">
 
         </EditText>
 
@@ -98,7 +98,7 @@
             android:hint="Confirm Password"
             android:inputType="textPassword"
             android:padding="10sp"
-            android:textColorHint="@color/black">
+            android:textColorHint="@color/hint">
 
         </EditText>
 
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20sp"
-                android:background="@drawable/rectanglev2"
+                android:background="@drawable/disabled_color"
                 android:fontFamily="@font/robotoslab"
                 android:text="Finish"
                 android:textAlignment="center"

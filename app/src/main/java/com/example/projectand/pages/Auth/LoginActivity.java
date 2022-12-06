@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.projectand.R;
 import com.example.projectand.database.FirebaseUserHandler;
 import com.example.projectand.pages.Main.MapsActivity;
+import com.example.projectand.utils.InternetConnection;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button loginBtn;
@@ -45,34 +46,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if(view.getId()==R.id.login_btn){
+        if(view.getId()==R.id.login_btn) {
             emailForm = email.getText().toString();
             passwordForm = pass.getText().toString();
 
-            if(!emailForm.isEmpty() && !passwordForm.isEmpty()) {
-                if (Patterns.EMAIL_ADDRESS.matcher(emailForm).matches()) {
-                    firebaseUserHandler.login(emailForm, passwordForm).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().getUser().isEmailVerified()) {
-                                Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                                startActivity(intent);
+            if (InternetConnection.checkConnection(this)) {
+                if (!emailForm.isEmpty() && !passwordForm.isEmpty()) {
+                    if (Patterns.EMAIL_ADDRESS.matcher(emailForm).matches()) {
+                        firebaseUserHandler.login(emailForm, passwordForm).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().getUser().isEmailVerified()) {
+                                    Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(this, "This email is not verified yet!", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(this, "This email is not verified yet!", Toast.LENGTH_SHORT).show();
+                                email.setError("Invalid email or password.");
+                                pass.setError("Invalid email or password.");
+                                Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            email.setError("Invalid email or password.");
-                            pass.setError("Invalid email or password.");
-                            Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        });
 
+                    } else {
+                        email.setError("Make sure the email is valid");
+                        Toast.makeText(this, "Make sure the email is valid", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    email.setError("Make sure the email is valid");
-                    Toast.makeText(this, "Make sure the email is valid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please fill in all fields in the form!", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Please fill in all fields in the form!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please connect to the internet first!", Toast.LENGTH_SHORT).show();
             }
         }
 

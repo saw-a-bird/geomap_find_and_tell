@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/search_icon"
+        android:title="Search"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_chatroom"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="Open chatroom"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_admin"
+        android:title="Administration"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_cloc"
+        android:onClick="onOptionsItemSelected"
+        android:title="Current location"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_goto"
+        android:onClick="onOptionsItemSelected"
+        android:title="Go to..."
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_logout"
+        android:title="Logout"
+        android:onClick="onOptionsItemSelected"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+</menu>

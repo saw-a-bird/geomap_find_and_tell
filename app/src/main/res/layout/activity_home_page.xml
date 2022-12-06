@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pages.HomeActivity"
+    tools:context=".pages.Main.HomeActivity"
     android:background="#CD0808"
     android:orientation="vertical">
 
@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="50sp"
         android:src="@drawable/findtell"></ImageView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,13 +41,13 @@
             android:id="@+id/country_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:ccp_defaultNameCode="US"
+            android:layout_gravity="center"
             app:ccp_contentColor="@color/white"
-            app:ccp_textSize="24sp"
+            app:ccp_defaultNameCode="TN"
             app:ccp_showFullName="true"
             app:ccp_showNameCode="false"
             app:ccp_showPhoneCode="false"
-            android:layout_gravity="center"/>
+            app:ccp_textSize="24sp" />
 
        <LinearLayout
            android:layout_width="wrap_content"
@@ -67,10 +68,10 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:width="100sp"
-               android:backgroundTint="#AAAAAA"
+               android:backgroundTint="@color/hint"
                android:hint="City"
                android:textColor="@color/white"
-               android:textColorHint="#AAAAAA"></EditText>
+               android:textColorHint="@color/hint"></EditText>
        </LinearLayout>
 
         <Button

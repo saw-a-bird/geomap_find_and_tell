@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#CD0808</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,4 +8,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="hint">#AAAAAA</color>
+    <color name="flag_enabled">#F49E9E</color>
+    <color name="flag">#C1BFBF</color>
+    <color name="flag_disabled">#999797</color>
+    <color name="cancel_btn">#D84C4C</color>
+    <color name="submit_btn">#035A07</color>
+    <color name="submit_btn_disabled">#999797</color>
 </resources>

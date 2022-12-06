@@ -20,6 +20,8 @@
     </style>
 
     <style name="Theme.ProjectAnd.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
+    <style name="SpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
     <style name="Theme.ProjectAnd.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

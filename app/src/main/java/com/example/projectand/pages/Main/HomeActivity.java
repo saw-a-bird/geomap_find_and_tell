@@ -5,6 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,9 @@ import com.example.projectand.pages.Auth.LoginActivity;
 import com.example.projectand.pages.Auth.RegistrationActivity;
 import com.hbb20.CountryCodePicker;
 
+import java.io.IOException;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
     Button btn_proceed;
     CountryCodePicker cpp;
@@ -24,6 +29,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     TextView log_in,reg;
 
     ActivityResultLauncher<Intent> launcherRegistration;
+    private Geocoder geoCoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         log_in.setOnClickListener(this);
         reg=findViewById(R.id.go_register);
         reg.setOnClickListener(this);
+        geoCoder = new Geocoder(this);
 
         configureLauncher();
     }
@@ -44,30 +51,34 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.getId()==R.id.btn_country){
-            String c_n=cpp.getSelectedCountryName();
-            String add= c_n+","+city_home.getText().toString();
-            Toast.makeText(this, add, Toast.LENGTH_SHORT).show();
-            Intent data = new Intent(HomeActivity.this, MapsActivity.class);
-            data.putExtra("country_name",add);
-            startActivity(data);
-        }
+        if (view.getId() == R.id.btn_country){
+            String full_address = cpp.getSelectedCountryName();
 
-        if(view.getId()==R.id.go_register){
+            String city = city_home.getText().toString();
+            if (!city.isEmpty()) {
+                full_address += "," + city;
+            }
+
+            Intent data = new Intent(HomeActivity.this, MapsActivity.class);
+            data.putExtra("country_name", full_address);
+            startActivity(data);
+
+        } else if (view.getId() == R.id.go_register){
             Intent intent = new Intent(HomeActivity.this, RegistrationActivity.class);
             launcherRegistration.launch(intent);
-        } else if(view.getId() == R.id.go_login){
+
+        } else if (view.getId() == R.id.go_login){
             Intent i = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(i);
             finish();
         }
-
     }
+
 
     public void configureLauncher() {
         launcherRegistration = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                Toast.makeText(this, "Successfully created account. Verification email was send to your inbox.", Toast.LENGTH_LONG).show();
+                //
             }
         });
     }

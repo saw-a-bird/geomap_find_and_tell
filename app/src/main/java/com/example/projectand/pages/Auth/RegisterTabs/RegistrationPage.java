@@ -13,7 +13,7 @@ import com.example.projectand.R;
 import com.example.projectand.pages.Auth.RegistrationActivity;
 
 public class RegistrationPage extends Fragment implements View.OnClickListener {
-    EditText name,familyname,cityandcountry;
+    EditText name,familyname;
     Button next;
 
     @Override
@@ -22,7 +22,6 @@ public class RegistrationPage extends Fragment implements View.OnClickListener {
 
         name = view.findViewById(R.id.name_form);
         familyname= view.findViewById(R.id.familyname_form);
-        cityandcountry = view.findViewById(R.id.countryandcity_form);
 
         next = view.findViewById(R.id.next_tab_btn);
         next.setOnClickListener(this);
@@ -35,9 +34,8 @@ public class RegistrationPage extends Fragment implements View.OnClickListener {
         if(view.getId()== R.id.next_tab_btn){
             String nameForm = name.getText().toString();
             String familynameForm = familyname.getText().toString();
-            String cityandcountryForm = cityandcountry.getText().toString();
 
-            ((RegistrationActivity) getActivity()).firstPage(nameForm, familynameForm, cityandcountryForm);
+            ((RegistrationActivity) getActivity()).firstPage(nameForm, familynameForm);
         }
     }
 
@@ -50,5 +48,8 @@ public class RegistrationPage extends Fragment implements View.OnClickListener {
         }
     }
 
+    public Button getNextBtn() {
+        return next;
+    }
     // other events
 }
