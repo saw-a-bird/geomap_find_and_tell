@@ -8,12 +8,15 @@
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.Toolbar
+
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary"
         android:elevation="10dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextAppearance="@style/ToolbarTitleTheme"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     </androidx.appcompat.widget.Toolbar>
@@ -26,16 +29,17 @@
 
 
     <com.skydoves.powerspinner.PowerSpinnerView
-        android:id="@+id/search_text_bar"
+        android:id="@+id/make_marker_categ"
         android:layout_width="170dp"
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/search_bar"
-        android:hint="sqd"
 
+        android:hint="Categories..."
         android:paddingLeft="10dp"
-        android:paddingTop="5dp"
 
+        android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@color/black"
         android:textColorHint="@color/hint"

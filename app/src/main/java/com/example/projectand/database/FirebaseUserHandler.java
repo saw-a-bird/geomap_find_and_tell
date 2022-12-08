@@ -70,9 +70,21 @@ public class FirebaseUserHandler {
             .child("last_location").setValue(location);
     }
 
+    public void saveCategory(Integer category) {
+        dataBase.child(TABLE_USERS)
+                .child(mAuth.getCurrentUser().getUid())
+                .child("favouriteCategory").setValue(category);
+    }
+
     public Task<DataSnapshot> getCurrentUser() {
         return dataBase.child(TABLE_USERS)
             .child(mAuth.getCurrentUser().getUid())
             .get();
+    }
+
+    public Task<DataSnapshot> getUser(String uid) {
+        return dataBase.child(TABLE_USERS)
+                .child(mAuth.getCurrentUser().getUid())
+                .get();
     }
 }

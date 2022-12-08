@@ -24,14 +24,22 @@ public class FirebaseMapMarkerHandler {
         Map<String, Object> postValues = mapMarker.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
 
-        childUpdates.put("/"+ TABLE_MARKERS +"/" + mapMarker.getCategoryId() + "/" + key, postValues);
+        childUpdates.put("/"+ TABLE_MARKERS +"/" + mapMarker.getCountry() + "/" + mapMarker.getCategoryId() + "/" + key, postValues);
         childUpdates.put("/"+ TABLE_USER_MARKERS + "/" + mapMarker.getCreatorId() + "/" + key, postValues);
 
         dataBase.updateChildren(childUpdates);
     }
 
-    public DatabaseReference getAll(int categoryId) {  // TODO: listeners
+    public void deleteMarker(MapMarker mapMarker) {
+         dataBase.child(TABLE_MARKERS)
+                .child(mapMarker.getCountry())
+                .child(String.valueOf(mapMarker.getCategoryId()))
+                .child(mapMarker.getId()).removeValue();
+    }
+
+    public DatabaseReference getAll(String country, String categoryId) {  // TODO: listeners
         return dataBase.child(TABLE_MARKERS)
+                .child(country)
                 .child(String.valueOf(categoryId));
     }
 }

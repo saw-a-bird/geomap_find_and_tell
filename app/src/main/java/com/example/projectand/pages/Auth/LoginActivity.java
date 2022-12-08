@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        email = findViewById(R.id.email_loginp);
+        email = findViewById(R.id.make_marker_loc);
         pass = findViewById(R.id.password_loginp);
 
         loginBtn =findViewById(R.id.login_btn);
@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     Toast.makeText(this, "This email is not verified yet!", Toast.LENGTH_SHORT).show();
                                 }

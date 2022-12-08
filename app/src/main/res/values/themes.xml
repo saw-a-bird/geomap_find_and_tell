@@ -19,6 +19,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <style name="ToolbarTitleTheme" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#FFAA12</item>
+        <!-- include other attributes you want to change: textColor, textStyle, etc -->
+    </style>
+
+    <style name="ToolbarSubtitleTheme" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">#FFAA12</item>
+    </style>
+
     <style name="Theme.ProjectAnd.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/spinner_background</item>

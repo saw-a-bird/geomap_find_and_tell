@@ -40,7 +40,7 @@
             android:textStyle="bold|italic"></TextView>
 
         <EditText
-            android:id="@+id/email_loginp"
+            android:id="@+id/make_marker_loc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

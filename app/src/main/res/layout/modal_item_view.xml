@@ -1,0 +1,196 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_4"
+    android:elevation="10dp"
+
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp"
+        android:gravity="right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Creator"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:id="@+id/make_marker_creator"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rectangle"
+            android:enabled="false"
+            android:hint="Loading..."
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textColor="@color/black"
+            android:textSize="12dp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Item"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:id="@+id/make_marker_categ_2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rectangle"
+            android:enabled="false"
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="12dp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Time left"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:id="@+id/make_marker_timeleft"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rectangle"
+            android:enabled="false"
+            android:hint="In minutes..."
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="10sp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/robotoslab"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="Remark"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+        <EditText
+            android:id="@+id/make_marker_remark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_area_rectangle"
+            android:enabled="false"
+            android:gravity="top"
+            android:hint="Something about the product..."
+            android:inputType="text|textMultiLine"
+            android:lines="3"
+            android:maxLines="10"
+            android:minLines="3"
+            android:padding="10sp"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:text="Exit"
+                android:textColor="#D84C4C"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

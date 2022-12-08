@@ -65,7 +65,7 @@ public class CountryDialogFragment extends DialogFragment implements AddressGett
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(getActivity().toString()
-                    + " must implement NoticeDialogListener");
+                    + " must implement CountryDialogListener");
         }
     }
 
@@ -83,7 +83,7 @@ public class CountryDialogFragment extends DialogFragment implements AddressGett
             String full_address = addressForm.getText().toString();
             if (!full_address.isEmpty()) {
                 disableBtns();
-                new AddressGetter(geoCoder, this).execute(full_address);
+                new AddressGetter(1, geoCoder, this).execute(full_address);
             } else {
                 addressForm.setError("Cannot be empty!");
             }
@@ -97,7 +97,7 @@ public class CountryDialogFragment extends DialogFragment implements AddressGett
     }
 
     @Override
-    public void onAddressGetterFinished(String result, Address address) {
+    public void onAddressGetterFinished(Integer code, String result, Address address) {
         if (address != null) {
             this.listener.onDialogValidated(this, result, address);
             this.dismiss();

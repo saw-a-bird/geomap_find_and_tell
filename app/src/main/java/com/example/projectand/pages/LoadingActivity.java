@@ -34,9 +34,14 @@ public class LoadingActivity extends AppCompatActivity {
 
                 task.addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful()) {
-                        System.out.println(task2.getResult());
-                        User.localizeInstance(this, new User(task2.getResult()));
-                        finishedWithIntent(new Intent(LoadingActivity.this, MapsActivity.class));
+                        try {
+                            System.out.println(task2.getResult());
+                            User.localizeInstance(this, new User(task2.getResult()));
+                            finishedWithIntent(new Intent(LoadingActivity.this, MapsActivity.class));
+                        } catch (Exception e) {
+                            firebaseUserHandler.signOut();
+                            finishedDefault();
+                        }
                     } else {
                         firebaseUserHandler.signOut();
                         finishedDefault();

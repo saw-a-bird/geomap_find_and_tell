@@ -28,9 +28,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     EditText city_home;
     TextView log_in,reg;
 
-    ActivityResultLauncher<Intent> launcherRegistration;
-    private Geocoder geoCoder;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,43 +40,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         log_in.setOnClickListener(this);
         reg=findViewById(R.id.go_register);
         reg.setOnClickListener(this);
-        geoCoder = new Geocoder(this);
-
-        configureLauncher();
     }
 
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
         if (view.getId() == R.id.btn_country){
             String full_address = cpp.getSelectedCountryName();
-
             String city = city_home.getText().toString();
+
             if (!city.isEmpty()) {
                 full_address += "," + city;
             }
 
-            Intent data = new Intent(HomeActivity.this, MapsActivity.class);
-            data.putExtra("country_name", full_address);
-            startActivity(data);
-
+            intent = new Intent(HomeActivity.this, MapsActivity.class);
+            intent.putExtra("country_name", full_address);
         } else if (view.getId() == R.id.go_register){
-            Intent intent = new Intent(HomeActivity.this, RegistrationActivity.class);
-            launcherRegistration.launch(intent);
-
+            intent = new Intent(HomeActivity.this, RegistrationActivity.class);
         } else if (view.getId() == R.id.go_login){
-            Intent i = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(i);
-            finish();
+            intent = new Intent(HomeActivity.this, LoginActivity.class);
         }
-    }
 
-
-    public void configureLauncher() {
-        launcherRegistration = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                //
-            }
-        });
+        if (intent != null) {
+            startActivity(intent);
+        }
     }
 }

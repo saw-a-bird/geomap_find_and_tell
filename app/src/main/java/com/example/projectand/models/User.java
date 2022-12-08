@@ -19,7 +19,6 @@ public class User {
     private String familyName;
     private String email;
     private String password;
-    private Integer favouriteCategory = 1;
     private LatLng lastLocation;
     private Integer role = 1; // 0 for admin // 1 for user
 
@@ -84,15 +83,6 @@ public class User {
         this.role = role;
     }
 
-
-    public Integer getFavouriteCategory() {
-        return favouriteCategory;
-    }
-
-    public void setFavouriteCategory(Integer favouriteCategory) {
-        this.favouriteCategory = favouriteCategory;
-    }
-
     public LatLng getLastLocation() {
         return lastLocation;
     }
@@ -109,7 +99,6 @@ public class User {
         result.put("family_name", familyName);
         result.put("email", email);
         result.put("last_location", lastLocation);
-        result.put("favouriteCategory", favouriteCategory);
         result.put("role", role);
 
         return result;
@@ -126,7 +115,6 @@ public class User {
             this.lastLocation = new LatLng(loc.get("latitude"), loc.get("longitude"));
         }
 
-        this.favouriteCategory = ((Long) data.child("favouriteCategory").getValue()).intValue();
         this.role = ((Long) data.child("role").getValue()).intValue();
     }
 

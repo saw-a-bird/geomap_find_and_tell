@@ -22,6 +22,7 @@ import com.example.projectand.database.FirebaseUserHandler;
 import com.example.projectand.models.User;
 import com.example.projectand.pages.Auth.RegisterTabs.RegistrationPage;
 import com.example.projectand.pages.Auth.RegisterTabs.RegistrationPage2;
+import com.example.projectand.pages.LoadingActivity;
 import com.example.projectand.pages.Main.HomeActivity;
 import com.example.projectand.utils.AddressGetter;
 import com.example.projectand.utils.InternetConnection;
@@ -64,6 +65,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if(event.getId() == R.id.login_text_btn) {
             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -131,6 +133,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         if (task3.isSuccessful()) {
                             firebaseUserHandler.signOut();
                             Toast.makeText(this, "Success. Verification email was send to your inbox.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                            startActivity(intent);
                             finish();
                         } else {
                            Toast.makeText(this, "Sorry, we could not connect to the emailer service! Try again later.", Toast.LENGTH_SHORT).show();

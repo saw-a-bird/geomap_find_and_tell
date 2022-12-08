@@ -4,12 +4,12 @@
     >
 
     <!-- "Mark Favorite", should appear as action button if possible -->
-    <item
+<!--    <item
         android:id="@+id/action_search"
         android:icon="@drawable/search_icon"
         android:title="Search"
         android:onClick="onOptionsItemSelected"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
 
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_chatroom"
@@ -18,17 +18,13 @@
         android:onClick="onOptionsItemSelected"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/action_admin"
-        android:title="Administration"
-        android:onClick="onOptionsItemSelected"
-        app:showAsAction="never"
-        android:visible="false"/>
-
     <item
         android:id="@+id/action_cloc"
         android:onClick="onOptionsItemSelected"
+        android:icon="@drawable/ic_baseline_my_location_24"
         android:title="Current location"
-        app:showAsAction="never" />
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_goto"
@@ -36,10 +32,21 @@
         android:title="Go to..."
         app:showAsAction="never" />
 
+    <item android:id="@+id/action_items"
+        android:title="All items (Admin)"
+        android:onClick="onOptionsItemSelected"
+        app:showAsAction="never"
+        android:visible="false"/>
+
     <item android:id="@+id/action_logout"
         android:title="Logout"
         android:onClick="onOptionsItemSelected"
         android:visible="false"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/action_login"
+        android:title="Login"
+        android:onClick="onOptionsItemSelected"
+        android:visible="false"
+        app:showAsAction="never"/>
 </menu>
