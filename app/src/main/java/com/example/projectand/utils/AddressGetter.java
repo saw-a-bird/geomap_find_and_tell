@@ -42,22 +42,18 @@ public class AddressGetter extends AsyncTask<String, Void, String> {
                 }
             } else {
                 Double latitude = Double.parseDouble(strings[0]);
-                Double longitute = Double.parseDouble(strings[1]);
-                List<Address> addressList = this.geocoder.getFromLocation(latitude, longitute, 1);
-                if (!isCancelled()) {
-                    if (!addressList.isEmpty()) {
-                        address = addressList.get(0);
-                        return "location";
-                    } else {
-                        return "This location does not exist!";
-                    }
+                Double longitude = Double.parseDouble(strings[1]);
+                List<Address> addressList = this.geocoder.getFromLocation(latitude, longitude, 1);
+
+                if (!addressList.isEmpty()) {
+                    address = addressList.get(0);
+                    return "location";
                 } else {
-                    Log.e("task", "canceled!!");
-                    return "canceled";
+                    return "This location does not exist!";
                 }
             }
         } catch (IOException e) {
-            return "Couldn't check address validity! Please check your internet connection.";
+            return "Couldn't process request! Please check your internet connection.";
         }
     }
 

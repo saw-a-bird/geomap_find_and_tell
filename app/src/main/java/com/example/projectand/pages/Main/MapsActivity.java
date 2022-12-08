@@ -69,7 +69,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, OnMapLongClickListener, OnCameraMoveListener, CountryDialogFragment.DialogListener, AddressGetter.OnAddressGetterFinished, CreateMarkerFragment.OnMarkerAccepted, OnSpinnerItemSelectedListener {
+public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, OnMapLongClickListener, OnCameraMoveListener, CountryDialogFragment.DialogListener, AddressGetter.OnAddressGetterFinished, CreateMarkerFragment.OnMarkerAccepted, OnSpinnerItemSelectedListener {
 
     DialogFragment dialog;
     private FirebaseUserHandler firebaseUserHandler;
@@ -101,6 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private HashMap<String, MapMarker> markerList;
     BitmapDescriptor colorMarker;
     Marker doubleClick;
+    LatLng mapClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,7 +347,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    // SET COUNTRY
+       // SET COUNTRY
     public void setCountry(String location, Address address) {
         Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
         LatLng lng = new LatLng(address.getLatitude(), address.getLongitude());
@@ -365,13 +366,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         toolbar.setSubtitle((address.getLocality() == null? "": address.getLocality()));
 
         Integer categoryId = searchBar.getSelectedIndex();
-        String cameraCountry = address.getCountryName();
-        String key = cameraCountry + " "+ categoryId;
+        String country = address.getCountryName();
+        String key = country + " "+ categoryId;
 
         if (!loadedMaps.containsKey(key)) {
             List<MapMarker> loadMap = new ArrayList<>();
             loadedMaps.put(key, loadMap);
-            DatabaseReference markers =  firebaseMapMarkerHandler.getAll(cameraCountry, categoryIdMap.get(categoryId));
+            DatabaseReference markers =  firebaseMapMarkerHandler.getAll(country, categoryIdMap.get(categoryId));
 
             markers.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -444,28 +445,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.e("location", "clicked");
 
         if (setMode) {
-            try {
-                if (USER_COUNTRY == null) {
-                    List<Address> addresses = geoCoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1);
-                    if (!addresses.isEmpty()) {
-                        USER_COUNTRY = addresses.get(0).getCountryName();
-                    }
-                }
-            // go to details activity with result
-                List<Address> addresses = geoCoder.getFromLocation(place.latitude, place.longitude, 1);
-                if (!addresses.isEmpty()) {
-                    Address address = addresses.get(0);
-                    if (Objects.equals(address.getCountryName(), USER_COUNTRY)) {
-                        dialog = new CreateMarkerFragment(this, address, searchBar.getSelectedIndex(), categoryList, categoryIdMap);
-                        dialog.show(getSupportFragmentManager(), "country");
-                        setMode = false;
-                        fab.setBackgroundTintList(ContextCompat.getColorStateList(MapsActivity.this, R.color.flag));
-                    } else {
-                        Toast.makeText(this,"You cannot set marker outside of your country!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (USER_COUNTRY != null) {
+                new AddressGetter(4, geoCoder, this).execute(String.valueOf(place.latitude), String.valueOf(place.longitude));
+            } else {
+                Toast.makeText(this, "Unable to get user country!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -586,21 +569,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             currentMarker = googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location"));
             if (waitingForPermission) {
-                // move to location
+                // if was waiting for permission.. move to location
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+                waitingForPermission = false;
             }
+            new AddressGetter(3, geoCoder, this).execute(String.valueOf(currentLocation.latitude), String.valueOf(currentLocation.longitude));
         }
     }
 
     @Override
     public void onAddressGetterFinished(Integer code, String result, Address address) {
         if (address != null) {
-            if (code == 1) {
-                setCountry(result, address);
-                System.out.println(result + ": " + address.getLatitude() + ", " + address.getLongitude());
-            } else if (code == 2) {
-                getAllMarkers(address);
+            switch (code) {
+                case 1:
+                    setCountry(result, address);
+                    System.out.println(result + ": " + address.getLatitude() + ", " + address.getLongitude());
+                    break;
+                case 2:
+                    getAllMarkers(address);
+                    break;
+                case 3:
+                    USER_COUNTRY = address.getCountryName();
+                    break;
+                case 4:
+                    if (Objects.equals(address.getCountryName(), USER_COUNTRY)) {
+                        dialog = new CreateMarkerFragment(this, address, searchBar.getSelectedIndex(), categoryList, categoryIdMap);
+                        dialog.show(getSupportFragmentManager(), "country");
+                        setMode = false;
+                        fab.setBackgroundTintList(ContextCompat.getColorStateList(MapsActivity.this, R.color.flag));
+                    } else {
+                        Toast.makeText(this,"You cannot set marker outside of your country!", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
+        } else {
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         }
     }
 }

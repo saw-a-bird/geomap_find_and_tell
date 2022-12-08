@@ -6,16 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.projectand.R;
 import com.example.projectand.models.Category;
-import com.example.projectand.models.MapMarker;
-import com.example.projectand.pages.modals.CreateMarkerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
