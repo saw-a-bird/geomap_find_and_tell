@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -390,6 +391,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
                             markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
                             loadMap.add(mapMarker);
+                            listenToMarker(mapMarker);
                         }
                     }
                 }
@@ -419,6 +421,21 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
             markers.addChildEventListener(markerListener);
         }
+    }
+
+    public void listenToMarker(MapMarker mapMarker) {
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            Log.e("flag ", "test");
+            int currentTime = mapMarker.getTimeLeft() - 1;
+            if (currentTime > 0) {
+                mapMarker.setTimeLeft(currentTime);
+                mapMarker.getMarker().setTitle(currentTime+" minutes left...");
+                listenToMarker(mapMarker);
+            } else {
+                firebaseMapMarkerHandler.deleteMarker(mapMarker);
+            }
+        }, 60000);
     }
 
     @Override
