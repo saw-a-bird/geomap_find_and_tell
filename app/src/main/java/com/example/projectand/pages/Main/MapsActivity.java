@@ -1,6 +1,7 @@
 package com.example.projectand.pages.Main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -374,43 +375,23 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
             loadedMaps.put(key, loadMap);
             DatabaseReference markers =  firebaseMapMarkerHandler.getAll(country, categoryIdMap.get(categoryId));
 
-            markers.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Log.e("Marker GET", String.valueOf(task.getResult().getChildrenCount()));
-                    task.getResult().getChildren().forEach(v -> {
-                        MapMarker mapMarker = new MapMarker(v);
-                        if (Duration.between(Instant.now(), mapMarker.getTimeCreation()).toHours() < 5) {
-                            Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
-                            mapMarker.setTimeLeft((int) duration.toMinutes());
-
-                            Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() +" minutes left..."));
-                            mapMarker.setMarker(marker);
-
-                            markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
-                            loadMap.add(mapMarker);
-                        } else {
-                            firebaseMapMarkerHandler.deleteMarker(mapMarker);
-                        }
-                    });
-                } else {
-                    Log.e("Marker GET", "ERROR"+ task.getException().getMessage());
-                }
-            });
-
             ChildEventListener markerListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     Log.e("Marker", "New marker added");
                     MapMarker mapMarker = new MapMarker(snapshot);
+                    if (!markerList.containsKey(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude)) {
+                        Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
+                        mapMarker.setTimeLeft((int) duration.toMinutes());
 
-                    Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
-                    mapMarker.setTimeLeft((int) duration.toMinutes());
+                        if (mapMarker.getTimeLeft() >= 0) {
+                            Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() + " minutes left..."));
+                            mapMarker.setMarker(marker);
 
-                    Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() +" minutes left..."));
-                    mapMarker.setMarker(marker);
-
-                    markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
-                    loadMap.add(mapMarker);
+                            markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
+                            loadMap.add(mapMarker);
+                        }
+                    }
                 }
 
                 @Override
@@ -420,9 +401,9 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
                 public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                     Log.e("Marker", "Marker was removed.");
                     if (snapshot.child("location").exists()) {
-                        HashMap<String, String> loc = (HashMap<String, String>) snapshot.child("location").getValue();
-                        String locationString = loc.get("latitude") + " " + loc.get("longitude");
-                        if (markerList.containsKey(locationString)) {
+                        MapMarker mapMarker = new MapMarker(snapshot);
+                        String locationString = mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude;
+                         if (markerList.containsKey(locationString)) {
                             markerList.get(locationString).getMarker().remove();
                             markerList.remove(locationString);
                         }
@@ -560,7 +541,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
     // CURRENT LOCATION
     public void setCurrentLocation(LocationManager locationManager) {
-        Location cLocation = locationManager
+        @SuppressLint("MissingPermission") Location cLocation = locationManager
                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         if (cLocation != null) {

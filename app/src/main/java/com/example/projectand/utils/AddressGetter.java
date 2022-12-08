@@ -31,26 +31,21 @@ public class AddressGetter extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
 
         try {
+            List<Address> addressList;
             if (strings.length == 1) {
                 String location = strings[0];
-                List<Address> addressList = this.geocoder.getFromLocationName(location, 1);
-                if (!addressList.isEmpty()) {
-                    address = addressList.get(0);
-                    return location;
-                } else {
-                    return "This location does not exist!";
-                }
+                addressList = this.geocoder.getFromLocationName(location, 1);
             } else {
-                Double latitude = Double.parseDouble(strings[0]);
-                Double longitude = Double.parseDouble(strings[1]);
-                List<Address> addressList = this.geocoder.getFromLocation(latitude, longitude, 1);
+                double latitude = Double.parseDouble(strings[0]);
+                double longitude = Double.parseDouble(strings[1]);
+                addressList = this.geocoder.getFromLocation(latitude, longitude, 1);
+            }
 
-                if (!addressList.isEmpty()) {
-                    address = addressList.get(0);
-                    return "location";
-                } else {
-                    return "This location does not exist!";
-                }
+            if (!addressList.isEmpty()) {
+                address = addressList.get(0);
+                return "location";
+            } else {
+                return "This location does not exist!";
             }
         } catch (IOException e) {
             return "Couldn't process request! Please check your internet connection.";
