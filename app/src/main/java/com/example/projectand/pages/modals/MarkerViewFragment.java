@@ -72,8 +72,7 @@ public class MarkerViewFragment extends DialogFragment {
         categForm.setText(categoryList.get(selectedCategoryId).getText());
 
         EditText timeLeftForm = (EditText) v.findViewById(R.id.make_marker_timeleft);
-        Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
-        timeLeftForm.setText(duration.toMinutes()+" minutes remaining...");
+        timeLeftForm.setText(mapMarker.getTimeLeft()+" minutes remaining...");
 
         EditText remarkForm = (EditText) v.findViewById(R.id.make_marker_remark);
         remarkForm.setText(mapMarker.getRemark());

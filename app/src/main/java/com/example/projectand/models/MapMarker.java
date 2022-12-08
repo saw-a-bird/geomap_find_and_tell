@@ -20,9 +20,9 @@ public class MapMarker {
     private String categoryId;
     private String creatorId;
     private String remark;
-
     private Marker marker;
 
+    private Integer timeLeft;
 
     public MapMarker() {
     }
@@ -106,13 +106,20 @@ public class MapMarker {
         this.remark = remark;
     }
 
-
     public Marker getMarker() {
         return marker;
     }
 
     public void setMarker(Marker marker) {
         this.marker = marker;
+    }
+
+    public Integer getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTimeLeft(Integer timeLeft) {
+        this.timeLeft = timeLeft;
     }
 
     public Map<String, Object> toMap() {

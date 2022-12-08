@@ -62,6 +62,7 @@ import com.skydoves.powerspinner.PowerSpinnerView;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +97,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Toolbar toolbar;
     private HashMap<String, List<MapMarker>> loadedMaps = new HashMap<>();
 
+    private Marker currentMarker;
     private HashMap<String, MapMarker> markerList;
     BitmapDescriptor colorMarker;
+    Marker doubleClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +212,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch(item.getItemId()){
-              /*  case R.id.action_search:
+   /*             case R.id.action_search:
                     triggerSearchBar();
                     break;*/
             case R.id.action_goto:
@@ -218,15 +221,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 dialog.show(getSupportFragmentManager(), "country");
                 break;
             case R.id.action_cloc:
-                if (currentLocation != null)
+                if (currentLocation != null) {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
-                else
+                    currentMarker.showInfoWindow();
+                } else {
                     Toast.makeText(this, "Please accept the location permission first!", Toast.LENGTH_SHORT).show();
+                }
 
+                break;
+            case R.id.action_refresh:
+                intent = new Intent(MapsActivity.this, MapsActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.action_items:
                 intent = new Intent(MapsActivity.this, ItemsActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.action_login:
                 intent = new Intent(MapsActivity.this, LoginActivity.class);
@@ -322,7 +333,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 searchBar.setSpinnerAdapter(iconSpinnerAdapter);
                 searchBar.setItems(categoryList);
 
-                Integer previous_category = sharedPreferences.getInt("favourite_category", 0);
+                int previous_category = sharedPreferences.getInt("favourite_category", 0);
 
                 if (categoryList.size() > previous_category)
                     searchBar.selectItemByIndex(previous_category);
@@ -355,7 +366,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Integer categoryId = searchBar.getSelectedIndex();
         String cameraCountry = address.getCountryName();
-        String key = cameraCountry + " "+ categoryIdMap.get(categoryId);
+        String key = cameraCountry + " "+ categoryId;
 
         if (!loadedMaps.containsKey(key)) {
             List<MapMarker> loadMap = new ArrayList<>();
@@ -368,7 +379,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     task.getResult().getChildren().forEach(v -> {
                         MapMarker mapMarker = new MapMarker(v);
                         if (Duration.between(Instant.now(), mapMarker.getTimeCreation()).toHours() < 5) {
-                            mapMarker.setMarker(googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation())));
+                            Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
+                            mapMarker.setTimeLeft((int) duration.toMinutes());
+
+                            Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() +" minutes left..."));
+                            mapMarker.setMarker(marker);
+
                             markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
                             loadMap.add(mapMarker);
                         } else {
@@ -385,7 +401,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     Log.e("Marker", "New marker added");
                     MapMarker mapMarker = new MapMarker(snapshot);
-                    mapMarker.setMarker(googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation())));
+
+                    Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
+                    mapMarker.setTimeLeft((int) duration.toMinutes());
+
+                    Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() +" minutes left..."));
+                    mapMarker.setMarker(marker);
+
                     markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
                     loadMap.add(mapMarker);
                 }
@@ -495,10 +517,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        String locationString = marker.getPosition().latitude + " " + marker.getPosition().longitude;
-        if (markerList.containsKey(locationString)) {
-            dialog = new MarkerViewFragment(this, markerList.get(locationString), categoryList, searchBar.getSelectedIndex());
-            dialog.show(getSupportFragmentManager(), "show");
+        if (doubleClick != null && marker.getPosition().equals(doubleClick.getPosition())) {
+            String locationString = marker.getPosition().latitude + " " + marker.getPosition().longitude;
+            if (markerList.containsKey(locationString)) {
+                dialog = new MarkerViewFragment(this, markerList.get(locationString), categoryList, searchBar.getSelectedIndex());
+                dialog.show(getSupportFragmentManager(), "show");
+            }
+            doubleClick = null;
+        } else {
+            marker.showInfoWindow();
+            doubleClick = marker;
         }
 
         return true;
@@ -556,7 +584,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             currentLocation = new LatLng(cLocation.getLatitude(), cLocation.getLongitude());
             Log.e("Location :", "current location");
 
-            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location"));
+            currentMarker = googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location"));
             if (waitingForPermission) {
                 // move to location
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
