@@ -51,3 +51,57 @@ The app is designed to help communities **collaboratively locate and share resou
 | Register 1 | Register 2 |
 |---------|---------|
 | ![Register1](https://github.com/user-attachments/assets/95553262-7d42-416b-a926-2108d1e206c9) | ![Register2](https://github.com/user-attachments/assets/3d9c7e20-07b0-46f0-a7d3-eb792f760a40) |
+
+## Firebase security rules
+
+```json
+{
+  "rules": {
+    "categories": {
+      ".read": true,  // anyone can read
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 0" // only admin can edit or create
+    },
+    "markers": {
+        ".read": true, // anyone can see markers
+      "$country": {
+        "$categoryId": {
+          "$markerId": {
+
+            ".write": "auth != null && (
+                        // Admin can write anything
+                        root.child('users').child(auth.uid).child('role').val() === 0 ||
+
+                        // Creator can create a new marker where they are the creator
+                        (!data.exists() && newData.child('creatorId').val() === auth.uid) ||
+
+                        // Creator can edit their existing marker
+                        (data.exists() && data.child('creatorId').val() === auth.uid)
+                       )"
+          }
+        }
+      }
+    },
+
+    "users": {
+      "$uid": {
+    ".read": "auth != null && auth.uid === $uid",  // users can read their own data
+
+    ".write": "auth != null && (
+                  // Admin can write anything, including role
+                  root.child('users').child(auth.uid).child('role').val() === 0 ||
+
+                  // User creating their own record for the first time, must have role = 1
+                  (!data.exists() &&
+                   newData.child('uid').val() === auth.uid &&
+                   newData.child('role').val() === 1) ||
+
+                  // User editing their own record, but cannot change role
+                  (data.exists() &&
+                   data.child('uid').val() === auth.uid &&
+                   !newData.hasChild('role'))
+               )"
+      }
+    }
+  }
+}
+```

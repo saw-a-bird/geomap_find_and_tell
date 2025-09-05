@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -64,11 +65,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (task.getResult().getUser().isEmailVerified()) {
                                     currentUser = User.getInstance(this);
                                     if (currentUser == null) {
-                                        Toast.makeText(this, "Authenticating...", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Please wait...", Toast.LENGTH_SHORT).show();
                                         firebaseUserHandler.getCurrentUser().addOnSuccessListener(result -> {
                                             currentUser = new User(result);
                                             User.localizeInstance(this, new User(result));
-                                            Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
 
                                             Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                                             startActivity(intent);
@@ -83,9 +84,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.makeText(this, "This email is not verified yet!", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
+                                Exception e = task.getException();
+                                if (e != null) {
+                                    Log.e("LOGIN", "Login failed", e);
+                                    Toast.makeText(this, "Login failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                } else {
+                                    Log.e("LOGIN", "Login failed for unknown reason");
+                                    Toast.makeText(this, "Login failed for unknown reason", Toast.LENGTH_LONG).show();
+                                }
+
                                 email.setError("Invalid email or password.");
                                 pass.setError("Invalid email or password.");
-                        //        Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

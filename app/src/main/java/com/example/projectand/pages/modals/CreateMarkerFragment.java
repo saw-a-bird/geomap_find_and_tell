@@ -81,12 +81,12 @@ public class CreateMarkerFragment extends DialogFragment implements OnSpinnerIte
 
         PowerSpinnerView categForm = (PowerSpinnerView) v.findViewById(R.id.make_marker_categ);
         EditText remarkForm = (EditText) v.findViewById(R.id.make_marker_remark);
-
-        Toast.makeText(
-                getContext(),
-                String.valueOf(categoryList.toArray().length),
-                Toast.LENGTH_SHORT
-        ).show();
+//
+//        Toast.makeText(
+//                getContext(),
+//                String.valueOf(categoryList.toArray().length),
+//                Toast.LENGTH_SHORT
+//        ).show();
 
         IconSpinnerAdapter iconSpinnerAdapter = new IconSpinnerAdapter(categForm);
         categForm.setSpinnerAdapter(iconSpinnerAdapter);
