@@ -1,0 +1,306 @@
+{
+  "categories": {
+    "-NIj_LsaIo6x3-tNGMwg": {
+      "id": "-NIj_LsaIo6x3-tNGMwg",
+      "name": "categ1"
+    },
+    "-NIlZ9I6UgR1SmUfpxZt": {
+      "id": "-NIlZ9I6UgR1SmUfpxZt",
+      "name": "sugar"
+    },
+    "-OZPF7KKjZQUbI10-Ye-": {
+      "id": "-OZPF7KKjZQUbI10-Ye-",
+      "name": "fuel"
+    }
+  },
+  "markers": {
+    "Italy": {
+      "-NIj_LsaIo6x3-tNGMwg": {
+        "-OZPF29_hiqaTWtJDXHh": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPF29_hiqaTWtJDXHh",
+          "location": {
+            "latitude": 40.4573251,
+            "longitude": 16.0582958
+          },
+          "remark": "test",
+          "timeCreation": "2025-09-05T14:20:38.420Z"
+        }
+      },
+      "-NIlZ9I6UgR1SmUfpxZt": {
+        "-OZPF4i0M2EMrZGfFkqB": {
+          "categoryId": "-NIlZ9I6UgR1SmUfpxZt",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPF4i0M2EMrZGfFkqB",
+          "location": {
+            "latitude": 40.4672781,
+            "longitude": 16.068878899999998
+          },
+          "remark": "test",
+          "timeCreation": "2025-09-05T14:20:48.879Z"
+        }
+      },
+      "-OZPF7KKjZQUbI10-Ye-": {
+        "-OZPFABKHe51mrER3z_M": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPFABKHe51mrER3z_M",
+          "location": {
+            "latitude": 40.5180363,
+            "longitude": 16.0632891
+          },
+          "remark": "here",
+          "timeCreation": "2025-09-05T14:21:11.299Z"
+        },
+        "-OZPFBYNUyx7uuTh36Q2": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPFBYNUyx7uuTh36Q2",
+          "location": {
+            "latitude": 40.4301633,
+            "longitude": 16.068643599999998
+          },
+          "remark": "here",
+          "timeCreation": "2025-09-05T14:21:16.871Z"
+        },
+        "-OZPFDDx7ygufuaHteKG": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPFDDx7ygufuaHteKG",
+          "location": {
+            "latitude": 40.458829699999995,
+            "longitude": 15.971897100000001
+          },
+          "remark": "here",
+          "timeCreation": "2025-09-05T14:21:23.755Z"
+        },
+        "-OZPFOOgGGdDhvigEiee": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPFOOgGGdDhvigEiee",
+          "location": {
+            "latitude": 40.4355532,
+            "longitude": 16.0085078
+          },
+          "remark": "here",
+          "timeCreation": "2025-09-05T14:22:09.498Z"
+        },
+        "-OZPIXOqal3w04w0Y5d_": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPIXOqal3w04w0Y5d_",
+          "location": {
+            "latitude": 40.485355399999996,
+            "longitude": 16.076370800000003
+          },
+          "remark": "something...",
+          "timeCreation": "2025-09-05T14:35:52.836Z"
+        },
+        "-OZPeJ84C7t4WiaMbUsA": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPeJ84C7t4WiaMbUsA",
+          "location": {
+            "latitude": 40.5180363,
+            "longitude": 16.0632891
+          },
+          "remark": "test",
+          "timeCreation": "2025-09-05T16:15:23.720Z"
+        },
+        "-OZPeNVSKYJOxnEla6Bm": {
+          "categoryId": "-OZPF7KKjZQUbI10-Ye-",
+          "country": "Italy",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZPeNVSKYJOxnEla6Bm",
+          "location": {
+            "latitude": 40.2369073,
+            "longitude": 16.0498631
+          },
+          "remark": "g",
+          "timeCreation": "2025-09-05T16:15:41.599Z"
+        }
+      }
+    },
+    "Tunisia": {
+      "-NIj_LsaIo6x3-tNGMwg": {
+        "-NIl6HoPEZTzhkkMCjUE": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIl6HoPEZTzhkkMCjUE",
+          "location": {
+            "latitude": 35.7651141,
+            "longitude": 10.5780333
+          },
+          "remark": "vvgg",
+          "timeCreation": "2022-12-08T09:42:12.462641Z"
+        },
+        "-NIl6bqNyj3918nyrPq9": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIl6bqNyj3918nyrPq9",
+          "location": {
+            "latitude": 35.8014004,
+            "longitude": 10.5223032
+          },
+          "remark": "gbff",
+          "timeCreation": "2022-12-08T09:43:38.603358Z"
+        },
+        "-NIl6dM2vrjI-DyKabsz": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIl6dM2vrjI-DyKabsz",
+          "location": {
+            "latitude": 35.776625599999996,
+            "longitude": 10.5768796
+          },
+          "remark": "fbfb",
+          "timeCreation": "2022-12-08T09:43:44.790123Z"
+        },
+        "-NIlYwwifPPmpY8Bhx_2": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIlYwwifPPmpY8Bhx_2",
+          "location": {
+            "latitude": 35.8229002,
+            "longitude": 10.5651171
+          },
+          "remark": "fghf6",
+          "timeCreation": "2022-12-08T11:47:25.363788Z"
+        },
+        "-OZLK5yu96IEDFjfgYY2": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZLK5yu96IEDFjfgYY2",
+          "location": {
+            "latitude": 35.8127997,
+            "longitude": 10.5914556
+          },
+          "remark": "smth here",
+          "timeCreation": "2025-09-04T20:04:18.263Z"
+        },
+        "-OZP1wNY2_ecSCGvU1p-": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZP1wNY2_ecSCGvU1p-",
+          "location": {
+            "latitude": 35.804044999999995,
+            "longitude": 10.573561
+          },
+          "remark": "smth",
+          "timeCreation": "2025-09-05T13:23:22.752Z"
+        },
+        "-OZP3AISn_9gwEWMwb56": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZP3AISn_9gwEWMwb56",
+          "location": {
+            "latitude": 35.8449173,
+            "longitude": 10.5960495
+          },
+          "remark": "test",
+          "timeCreation": "2025-09-05T13:28:46.011Z"
+        },
+        "-OZP3Ds73LxvtSjFF7C7": {
+          "categoryId": "-NIj_LsaIo6x3-tNGMwg",
+          "country": "Tunisia",
+          "creatorId": "fl6VTEpJJCRMUsyDmI5PkaYvm9D3",
+          "id": "-OZP3Ds73LxvtSjFF7C7",
+          "location": {
+            "latitude": 35.8462181,
+            "longitude": 10.587934299999999
+          },
+          "remark": "tejj",
+          "timeCreation": "2025-09-05T13:29:00.645Z"
+        }
+      },
+      "-NIj_sv3odAuPXwq5-Pr": {
+        "-NIkWB3sK-IMwbYKOmJK": {
+          "categoryId": "-NIj_sv3odAuPXwq5-Pr",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIkWB3sK-IMwbYKOmJK",
+          "location": {
+            "latitude": 35.7804216,
+            "longitude": 10.477442
+          },
+          "remark": "",
+          "timeCreation": "2022-12-08T06:55:43.480012Z"
+        }
+      },
+      "-NIlZ9I6UgR1SmUfpxZt": {
+        "-NIlZDJ40q1R_M6Eeooc": {
+          "categoryId": "-NIlZ9I6UgR1SmUfpxZt",
+          "country": "Tunisia",
+          "creatorId": "OSXcx79YnibpeAlqCsT9Of2qhUh2",
+          "id": "-NIlZDJ40q1R_M6Eeooc",
+          "location": {
+            "latitude": 35.751836,
+            "longitude": 10.632860599999999
+          },
+          "remark": "4aly chway",
+          "timeCreation": "2022-12-08T11:48:36.489951Z"
+        }
+      }
+    }
+  },
+  "users": {
+    "OSXcx79YnibpeAlqCsT9Of2qhUh2": {
+      "email": "gamezrookie@gmail.com",
+      "family_name": "abdelkebir",
+      "last_location": {
+        "latitude": 35.73610215694597,
+        "longitude": 10.630692020058632
+      },
+      "name": "mahdi",
+      "role": 0,
+      "uid": "OSXcx79YnibpeAlqCsT9Of2qhUh2"
+    },
+    "b44vhKz6NEVJ5y3rmmLMQIOXIWk1": {
+      "email": "saiftunisia2016@gmail.com",
+      "family_name": "Romdhane ",
+      "last_location": {
+        "latitude": 35.88407537935945,
+        "longitude": 10.60181066393852
+      },
+      "name": "Saif",
+      "role": 1,
+      "uid": "b44vhKz6NEVJ5y3rmmLMQIOXIWk1"
+    },
+    "fl6VTEpJJCRMUsyDmI5PkaYvm9D3": {
+      "family_name": "test",
+      "last_location": {
+        "latitude": 40.30125111013243,
+        "longitude": 16.06224037706852
+      },
+      "name": "random",
+      "role": 0
+    },
+    "kLMWw6tUtPatUmYluuL6UskCygH3": {
+      "email": "frajshow@gmail.com",
+      "family_name": "Frej",
+      "last_location": {
+        "latitude": 35.86523502034672,
+        "longitude": 10.583887472748756
+      },
+      "name": "Ahmed ",
+      "role": 1,
+      "uid": "kLMWw6tUtPatUmYluuL6UskCygH3"
+    }
+  }
+}
