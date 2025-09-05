@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.projectand.R;
 import com.example.projectand.database.FirebaseUserHandler;
+import com.example.projectand.models.User;
 import com.example.projectand.pages.Main.MapsActivity;
 import com.example.projectand.utils.InternetConnection;
 
@@ -23,7 +24,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText email, pass;
     String emailForm, passwordForm;
 
-    private FirebaseUserHandler firebaseUserHandler;
+    public static User currentUser;
+
+    public static FirebaseUserHandler firebaseUserHandler;
 //    private SharedPreferences localStorage;
 
     @Override
@@ -56,10 +59,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         firebaseUserHandler.login(emailForm, passwordForm).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 if (task.getResult().getUser().isEmailVerified()) {
-                                    Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    currentUser = User.getInstance(this);
+                                    if (currentUser == null) {
+                                        Toast.makeText(this, "Authenticating...", Toast.LENGTH_SHORT).show();
+                                        firebaseUserHandler.getCurrentUser().addOnSuccessListener(result -> {
+                                            currentUser = new User(result);
+                                            User.localizeInstance(this, new User(result));
+                                            Toast.makeText(this, "Successfully connected!", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(this, "Failed to load user: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                            e.printStackTrace();
+                                        });
+                                    }
                                 } else {
                                     Toast.makeText(this, "This email is not verified yet!", Toast.LENGTH_SHORT).show();
                                 }

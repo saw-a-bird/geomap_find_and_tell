@@ -3,13 +3,7 @@ package com.example.projectand.pages.Main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,22 +16,13 @@ import com.example.projectand.R;
 import com.example.projectand.adapters.ItemAdapter;
 import com.example.projectand.database.FirebaseCategoryHandler;
 import com.example.projectand.models.Category;
-import com.example.projectand.models.MapMarker;
-import com.example.projectand.pages.Auth.LoginActivity;
-import com.example.projectand.pages.Auth.RegistrationActivity;
 import com.example.projectand.pages.modals.CategoryCreateFragment;
-import com.example.projectand.pages.modals.CountryDialogFragment;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.hbb20.CountryCodePicker;
-import com.skydoves.powerspinner.IconSpinnerAdapter;
-import com.skydoves.powerspinner.IconSpinnerItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,7 +80,7 @@ public class ItemsActivity extends AppCompatActivity implements SearchView.OnQue
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Category category = new Category(snapshot);
 
-                Boolean found = false;
+                boolean found = false;
                 for (Category item : categoryList) {
                     if (Objects.equals(item.getId(), category.getId())) {
                         found = true;
@@ -133,6 +118,7 @@ public class ItemsActivity extends AppCompatActivity implements SearchView.OnQue
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if (newText == null) newText = "";  // <- add this line
         itemAdapter.filter(newText);
         Log.e("search", newText);
         return false;

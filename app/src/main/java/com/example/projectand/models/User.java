@@ -2,9 +2,6 @@ package com.example.projectand.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
@@ -115,7 +112,20 @@ public class User {
             this.lastLocation = new LatLng(loc.get("latitude"), loc.get("longitude"));
         }
 
-        this.role = ((Long) data.child("role").getValue()).intValue();
+        DataSnapshot roleSnapshot = data.child("role");
+        if (roleSnapshot.exists() && roleSnapshot.getValue() != null) {
+            Object roleObj = roleSnapshot.getValue();
+            if (roleObj instanceof Long) {
+                this.role = ((Long) roleObj).intValue();
+            } else if (roleObj instanceof Integer) {
+                this.role = (Integer) roleObj;
+            } else {
+                this.role = 0; // default fallback
+            }
+        } else {
+            this.role = 0; // or whatever default makes sense
+        }
+
     }
 
 

@@ -3,20 +3,18 @@ package com.example.projectand.pages.modals;
 import android.app.Dialog;
 import android.content.Context;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.projectand.R;
 import com.example.projectand.models.MapMarker;
-import com.example.projectand.utils.AddressGetter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.skydoves.powerspinner.IconSpinnerAdapter;
@@ -24,7 +22,6 @@ import com.skydoves.powerspinner.IconSpinnerItem;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +81,12 @@ public class CreateMarkerFragment extends DialogFragment implements OnSpinnerIte
 
         PowerSpinnerView categForm = (PowerSpinnerView) v.findViewById(R.id.make_marker_categ);
         EditText remarkForm = (EditText) v.findViewById(R.id.make_marker_remark);
+
+        Toast.makeText(
+                getContext(),
+                String.valueOf(categoryList.toArray().length),
+                Toast.LENGTH_SHORT
+        ).show();
 
         IconSpinnerAdapter iconSpinnerAdapter = new IconSpinnerAdapter(categForm);
         categForm.setSpinnerAdapter(iconSpinnerAdapter);

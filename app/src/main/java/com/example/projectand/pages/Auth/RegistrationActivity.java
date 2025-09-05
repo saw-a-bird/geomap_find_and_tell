@@ -1,14 +1,10 @@
 package com.example.projectand.pages.Auth;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +18,8 @@ import com.example.projectand.database.FirebaseUserHandler;
 import com.example.projectand.models.User;
 import com.example.projectand.pages.Auth.RegisterTabs.RegistrationPage;
 import com.example.projectand.pages.Auth.RegisterTabs.RegistrationPage2;
-import com.example.projectand.pages.LoadingActivity;
 import com.example.projectand.pages.Main.HomeActivity;
-import com.example.projectand.utils.AddressGetter;
 import com.example.projectand.utils.InternetConnection;
-
-import java.io.IOException;
-import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     String name = null;
@@ -122,13 +113,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void createUser(User user) {
-        Toast.makeText(this, "Processing query...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Processing sign-up query...", Toast.LENGTH_SHORT).show();
         ((RegistrationPage2) page2).getSubmitBtn().setEnabled(false);
         firebaseUserHandler.existsEmail(user.getEmail()).addOnSuccessListener(task -> {
             if (task.getSignInMethods().isEmpty()) {
                 firebaseUserHandler.createUserAuth(user.getEmail(), user.getPassword()).addOnSuccessListener(task2 -> {
                     user.setId(task2.getUser().getUid());
+                    Log.e("FIREBASE", "Create user");
                     firebaseUserHandler.createUser(user);
+                    Log.e("FIREBASE", "Sending verification email.");
                     firebaseUserHandler.sendVerificationEmail().addOnCompleteListener(task3 -> {
                         if (task3.isSuccessful()) {
                             firebaseUserHandler.signOut();

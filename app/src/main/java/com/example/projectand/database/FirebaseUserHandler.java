@@ -1,5 +1,7 @@
 package com.example.projectand.database;
 
+import android.util.Log;
+
 import com.example.projectand.models.User;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -15,8 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseUserHandler {
-    private FirebaseAuth mAuth;
-    private DatabaseReference dataBase;
+    private final FirebaseAuth mAuth;
+    private final DatabaseReference dataBase;
     private static final String TABLE_USERS = "users";
 
     public FirebaseUserHandler() {
@@ -53,6 +55,18 @@ public class FirebaseUserHandler {
 
 
     /* CRUD */
+
+    public Task<DataSnapshot> getCurrentUser() {
+        return dataBase.child(TABLE_USERS)
+                .child(mAuth.getCurrentUser().getUid())
+                .get();
+    }
+
+    public Task<DataSnapshot> getUser(String uid) {
+        return dataBase.child(TABLE_USERS)
+                .child(uid)
+                .get();
+}
     public void createUser(User user) {
         // TODO test: dataBase.child(TABLE_USERS).child(user.getId()).setValue(user)
 
@@ -60,8 +74,14 @@ public class FirebaseUserHandler {
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put("/"+ TABLE_USERS +"/" + user.getId(), postValues);
+        dataBase.updateChildren(childUpdates, (error, ref) -> {
+            if (error != null) {
+                Log.e("FIREBASE", "CREATE failed: " + error.getMessage());
+            } else {
+                Log.d("FIREBASE", "CREATE successful");
+            }
+        });
 
-        dataBase.updateChildren(childUpdates);
     }
 
     public void saveLocation(LatLng location) {
@@ -70,21 +90,9 @@ public class FirebaseUserHandler {
             .child("last_location").setValue(location);
     }
 
-    public void saveCategory(Integer category) {
+    public void saveFavouriteCategory(Integer category) {
         dataBase.child(TABLE_USERS)
                 .child(mAuth.getCurrentUser().getUid())
                 .child("favouriteCategory").setValue(category);
-    }
-
-    public Task<DataSnapshot> getCurrentUser() {
-        return dataBase.child(TABLE_USERS)
-            .child(mAuth.getCurrentUser().getUid())
-            .get();
-    }
-
-    public Task<DataSnapshot> getUser(String uid) {
-        return dataBase.child(TABLE_USERS)
-                .child(mAuth.getCurrentUser().getUid())
-                .get();
     }
 }

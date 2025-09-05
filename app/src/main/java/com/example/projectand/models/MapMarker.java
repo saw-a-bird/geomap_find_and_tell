@@ -4,10 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DataSnapshot;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +119,12 @@ public class MapMarker {
         this.timeLeft = timeLeft;
     }
 
+    public String getDescription() {
+        if (this.remark.isEmpty()) {
+            return this.getTimeLeft() + " minutes left...";
+        }
+        return this.getRemark() + " (" + this.getTimeLeft() + " minutes left...)";
+    }
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("id", id);

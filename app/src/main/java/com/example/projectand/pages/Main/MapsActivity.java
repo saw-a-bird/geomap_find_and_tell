@@ -41,7 +41,6 @@ import com.example.projectand.utils.AddressGetter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
-import com.google.android.gms.maps.GoogleMap.OnCameraMoveListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -55,23 +54,19 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.skydoves.powerspinner.IconSpinnerAdapter;
 import com.skydoves.powerspinner.IconSpinnerItem;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, OnMapLongClickListener, OnCameraMoveListener, CountryDialogFragment.DialogListener, AddressGetter.OnAddressGetterFinished, CreateMarkerFragment.OnMarkerAccepted, OnSpinnerItemSelectedListener {
+public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener, OnMapLongClickListener, GoogleMap.OnCameraIdleListener, CountryDialogFragment.DialogListener, AddressGetter.OnAddressGetterFinished, CreateMarkerFragment.OnMarkerAccepted, OnSpinnerItemSelectedListener {
 
     DialogFragment dialog;
     private FirebaseUserHandler firebaseUserHandler;
@@ -108,6 +103,14 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseUserHandler = LoginActivity.firebaseUserHandler;
+        currentUser = LoginActivity.currentUser;
+        if (LoginActivity.currentUser != null)
+            isAuthenticated = true;
+
+        firebaseMapMarkerHandler = new FirebaseMapMarkerHandler();
+
         sharedPreferences =  this.getSharedPreferences(
                 this.getPackageName(), Context.MODE_PRIVATE);
 
@@ -120,31 +123,13 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
             finish();
         }
 
-        firebaseUserHandler = new FirebaseUserHandler();
-        firebaseMapMarkerHandler = new FirebaseMapMarkerHandler();
-
-        isAuthenticated = firebaseUserHandler.isAuthenticated();
-        if (isAuthenticated) {
-            currentUser = User.getInstance(this);
-            if (currentUser == null) {
-                firebaseUserHandler.getCurrentUser().addOnSuccessListener(result -> {
-                    currentUser = new User(result);
-                    User.localizeInstance(this, new User(result));
-                    loadView(); // ok 2
-                });
-            } else {
-                loadView(); // ok
-            }
-        } else {
-            loadView(); // not ok
-        }
+        loadView(); // ok 2
     }
 
     /*
         LOADING View
      */
     public void loadView() {
-
         // MARKER BUTTON
         fab = findViewById(R.id.markerBtn);
 
@@ -162,7 +147,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
                         setMode = !setMode;
                         if (setMode) {
                             fab.setBackgroundTintList(ContextCompat.getColorStateList(MapsActivity.this, R.color.flag_enabled));
-                            Toast.makeText(this, "Select a place on the map.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Select a place on the map (Long press).", Toast.LENGTH_SHORT).show();
                         } else {
                             fab.setBackgroundTintList(ContextCompat.getColorStateList(MapsActivity.this, R.color.flag));
                         }
@@ -262,11 +247,8 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
         geoCoder = new Geocoder(this);
         googleMap = gMap;
         googleMap.setOnMapLongClickListener(this);
-
-        if (currentUser != null) {
-            googleMap.setOnCameraMoveListener(this);
-            googleMap.setOnMarkerClickListener(this);
-        }
+        googleMap.setOnCameraIdleListener(this);
+        googleMap.setOnMarkerClickListener(this);
 
         // GETTING CURRENT LOCATION
         LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -289,7 +271,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
         load();
 
         // MOVING CAMERA
-        if (currentUser != null) {
+        if (isAuthenticated) {
             if (currentUser.getLastLocation() != null) {
                 // move map to user location
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUser.getLastLocation(), 12));
@@ -319,12 +301,12 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
     private void load() {
         FirebaseCategoryHandler firebaseCategoryHandler = new FirebaseCategoryHandler();
+        categoryList = new ArrayList<>();
+        categoryIdMap = new HashMap<>();
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         firebaseCategoryHandler.getAll().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                categoryList = new ArrayList<>();
-                categoryIdMap = new HashMap<>();
-
                 int increment = 0;
                 for (DataSnapshot item : task.getResult().getChildren()) {
                     Category category = new Category((String) item.child("id").getValue(), (String) item.child("name").getValue());
@@ -351,7 +333,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
        // SET COUNTRY
     public void setCountry(String location, Address address) {
-        Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
         LatLng lng = new LatLng(address.getLatitude(), address.getLongitude());
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lng, 12));
     }
@@ -360,7 +342,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
     public void getAllMarkers() {
         LatLng lng = googleMap.getCameraPosition().target;
         String latitude = String.valueOf(lng.latitude), longitude = String.valueOf(lng.longitude);
-        new AddressGetter(2, geoCoder, this).execute(latitude, longitude);
+        AsyncTask<String, Void, String> execute = new AddressGetter(2, geoCoder, this).execute(latitude, longitude);
     }
 
     public void getAllMarkers(Address address) {
@@ -385,92 +367,93 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
                         Duration duration = Duration.between(Instant.now(), mapMarker.getTimeCreation().plus(5, ChronoUnit.HOURS));
                         mapMarker.setTimeLeft((int) duration.toMinutes());
 
-                        if (mapMarker.getTimeLeft() >= 0) {
-                            Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getTimeLeft() + " minutes left..."));
-                            mapMarker.setMarker(marker);
+                            if (mapMarker.getTimeLeft() >= 0) {
+                                Marker marker = googleMap.addMarker(new MarkerOptions().icon(colorMarker).position(mapMarker.getLocation()).title(mapMarker.getDescription()));
+                                mapMarker.setMarker(marker);
 
-                            markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
-                            loadMap.add(mapMarker);
-                            listenToMarker(mapMarker);
+                                markerList.put(mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude, mapMarker);
+                                loadMap.add(mapMarker);
+                                listenToMarker(mapMarker);
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                    Log.e("Marker", "Marker was removed.");
-                    if (snapshot.child("location").exists()) {
-                        MapMarker mapMarker = new MapMarker(snapshot);
-                        String locationString = mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude;
-                         if (markerList.containsKey(locationString)) {
-                            markerList.get(locationString).getMarker().remove();
-                            markerList.remove(locationString);
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        Log.e("Marker", "Marker was removed.");
+                        if (snapshot.child("location").exists()) {
+                            MapMarker mapMarker = new MapMarker(snapshot);
+                            String locationString = mapMarker.getLocation().latitude + " " + mapMarker.getLocation().longitude;
+                             if (markerList.containsKey(locationString)) {
+                                markerList.get(locationString).getMarker().remove();
+                                markerList.remove(locationString);
+                            }
                         }
                     }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                };
+
+                markers.addChildEventListener(markerListener);
+            }
+        }
+
+        public void listenToMarker(MapMarker mapMarker) {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                Log.e("flag ", "test");
+                int currentTime = mapMarker.getTimeLeft() - 1;
+                if (currentTime > 0) {
+                    mapMarker.setTimeLeft(currentTime);
+                    mapMarker.getMarker().setTitle(mapMarker.getDescription());
+                    listenToMarker(mapMarker);
+                } else {
+                    firebaseMapMarkerHandler.deleteMarker(mapMarker);
                 }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
-            };
-
-            markers.addChildEventListener(markerListener);
+            }, 60000);
         }
-    }
 
-    public void listenToMarker(MapMarker mapMarker) {
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            Log.e("flag ", "test");
-            int currentTime = mapMarker.getTimeLeft() - 1;
-            if (currentTime > 0) {
-                mapMarker.setTimeLeft(currentTime);
-                mapMarker.getMarker().setTitle(currentTime+" minutes left...");
-                listenToMarker(mapMarker);
-            } else {
-                firebaseMapMarkerHandler.deleteMarker(mapMarker);
-            }
-        }, 60000);
-    }
+        @Override
+        public void onMapLongClick(@NonNull LatLng place) {
+            Log.e("location", "clicked");
 
-    @Override
-    public void onMapLongClick(@NonNull LatLng place) {
-        Log.e("location", "clicked");
-
-        if (setMode) {
-            if (USER_COUNTRY != null) {
-                new AddressGetter(4, geoCoder, this).execute(String.valueOf(place.latitude), String.valueOf(place.longitude));
-            } else {
-                Toast.makeText(this, "Unable to get user country!", Toast.LENGTH_SHORT).show();
+            if (setMode) {
+                if (USER_COUNTRY != null) {
+                    Log.e("location", "Getting address...");
+                    new AddressGetter(4, geoCoder, this).execute(String.valueOf(place.latitude), String.valueOf(place.longitude));
+                } else {
+                    Toast.makeText(this, "Unable to get user country!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
-    }
 
-    // UNUSED SEARCH BAR ANIMATION
- /*   private void triggerSearchBar() {
-        Toast.makeText(this, "Triggered.", Toast.LENGTH_SHORT).show();
+        // UNUSED SEARCH BAR ANIMATION
+     /*   private void triggerSearchBar() {
+            Toast.makeText(this, "Triggered.", Toast.LENGTH_SHORT).show();
 
-        float translationY = !appearSearch ? 130f : 0;
-        appearSearch = !appearSearch;
+            float translationY = !appearSearch ? 130f : 0;
+            appearSearch = !appearSearch;
 
-        searchBar.animate()
-                .translationY(translationY)
-                .setDuration(1000)
-                .start();
-    }*/
-
+            searchBar.animate()
+                    .translationY(translationY)
+                    .setDuration(1000)
+                    .start();
+        }*/
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Log.e("Location", String.valueOf(requestCode));
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            Log.e("Location", String.valueOf(requestCode));
         if (requestCode == 101) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -488,9 +471,12 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     @Override
-    public void onCameraMove() {
-        LatLng newLocation = new LatLng(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
-        firebaseUserHandler.saveLocation(newLocation);
+    public void onCameraIdle() {
+       // Log.e("CAMERA", "Reloading markers...");
+        if (isAuthenticated) {
+            LatLng newLocation = new LatLng(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
+            firebaseUserHandler.saveLocation(newLocation);
+        }
         toolbar.setTitle("Loading...");
         toolbar.setSubtitle("");
         getAllMarkers();
@@ -563,8 +549,6 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
         if (cLocation != null) {
             currentLocation = new LatLng(cLocation.getLatitude(), cLocation.getLongitude());
-            Log.e("Location :", "current location");
-
             currentMarker = googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current location"));
             if (waitingForPermission) {
                 // if was waiting for permission.. move to location
@@ -577,6 +561,7 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onAddressGetterFinished(Integer code, String result, Address address) {
+        Log.e("location", "Address acquired (code: "+code+")!");
         if (address != null) {
             switch (code) {
                 case 1:
@@ -584,24 +569,27 @@ public class  MapsActivity extends AppCompatActivity implements OnMapReadyCallba
                     System.out.println(result + ": " + address.getLatitude() + ", " + address.getLongitude());
                     break;
                 case 2:
+                  //  Log.e("CAMERA", "Loading address markers...");
                     getAllMarkers(address);
                     break;
                 case 3:
                     USER_COUNTRY = address.getCountryName();
                     break;
                 case 4:
-                    if (Objects.equals(address.getCountryName(), USER_COUNTRY)) {
+                    Log.e("location", "Setting marker...");
+               //     if (Objects.equals(address.getCountryName(), USER_COUNTRY)) {
+                        Log.e("location", "Opening fragment...");
                         dialog = new CreateMarkerFragment(this, address, searchBar.getSelectedIndex(), categoryList, categoryIdMap);
                         dialog.show(getSupportFragmentManager(), "country");
                         setMode = false;
                         fab.setBackgroundTintList(ContextCompat.getColorStateList(MapsActivity.this, R.color.flag));
-                    } else {
-                        Toast.makeText(this,"You cannot set marker outside of your country!", Toast.LENGTH_SHORT).show();
-                    }
+              //      } else {
+             //           Toast.makeText(this,"You cannot set marker outside of your country!", Toast.LENGTH_SHORT).show();
+             //       }
                     break;
             }
         } else {
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+            Log.e("location", "Address getter failed: "+ result);
         }
     }
 }

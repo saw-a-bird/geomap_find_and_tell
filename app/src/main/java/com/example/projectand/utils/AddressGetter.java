@@ -3,7 +3,6 @@ package com.example.projectand.utils;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +21,7 @@ public class AddressGetter extends AsyncTask<String, Void, String> {
     }
 
     public interface OnAddressGetterFinished {
-        public void onAddressGetterFinished(Integer code, String result, Address address);
+        void onAddressGetterFinished(Integer code, String result, Address address);
     }
 
     // required methods
@@ -43,9 +42,9 @@ public class AddressGetter extends AsyncTask<String, Void, String> {
 
             if (!addressList.isEmpty()) {
                 address = addressList.get(0);
-                return "location";
+                return "Address list is not empty but the first address is null! (who knows why)"; // if address becomes null (for some weird reason), this error will show, but normally, it works successfully.
             } else {
-                return "This location does not exist!";
+                return "This location does not exist! (Somewhere unknown like the sea)";
             }
         } catch (IOException e) {
             return "Couldn't process request! Please check your internet connection.";
