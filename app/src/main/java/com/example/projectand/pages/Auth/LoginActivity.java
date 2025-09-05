@@ -55,7 +55,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if (InternetConnection.checkConnection(this)) {
                 if (!emailForm.isEmpty() && !passwordForm.isEmpty()) {
-                    if (Patterns.EMAIL_ADDRESS.matcher(emailForm).matches()) {
+                    if (!Patterns.EMAIL_ADDRESS.matcher(emailForm).matches()) {
+                        email.setError("Make sure the email is valid");
+                        //  Toast.makeText(this, "Make sure the email is valid", Toast.LENGTH_SHORT).show();
+                    } else {
                         firebaseUserHandler.login(emailForm, passwordForm).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 if (task.getResult().getUser().isEmailVerified()) {
@@ -82,13 +85,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             } else {
                                 email.setError("Invalid email or password.");
                                 pass.setError("Invalid email or password.");
-                                Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
+                        //        Toast.makeText(this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
                             }
                         });
-
-                    } else {
-                        email.setError("Make sure the email is valid");
-                        Toast.makeText(this, "Make sure the email is valid", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, "Please fill in all fields in the form!", Toast.LENGTH_SHORT).show();

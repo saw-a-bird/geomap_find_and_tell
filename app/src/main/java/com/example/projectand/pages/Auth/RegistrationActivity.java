@@ -76,24 +76,28 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void secondPage(String emailF, String passwordF, String repasswordF) {
         if (InternetConnection.checkConnection(this)) {
             if (!emailF.isEmpty() && !passwordF.isEmpty() && !repasswordF.isEmpty()) {
-                if (Patterns.EMAIL_ADDRESS.matcher(emailF).matches()) {
-                    if (passwordF.length() >= 6) {
-                        if (repasswordF.matches(passwordF)) {
-
-                            email = emailF;
-                            password = passwordF;
-                            User user = new User(name, familyname, email, password);
-                            createUser(user);
-
-                        } else {
-                            formError(page2, R.id.password_form, "Make sure that the password matches!");
-                        }
-                    } else {
-                        formError(page2, R.id.password_form, "The password length must be at least 6 characters!");
-                    }
-                } else {
+                boolean valid = true;
+                if (!Patterns.EMAIL_ADDRESS.matcher(emailF).matches()) {
                     formError(page2, R.id.email_form, "Make sure that the email is valid!");
+                    valid = false;
                 }
+
+                if (passwordF.length() < 6) {
+                    formError(page2, R.id.password_form, "The password length must be at least 6 characters!");
+                    valid = false;
+                }
+
+                if (!repasswordF.equals(passwordF)) {
+                    formError(page2, R.id.repassword_form, "Make sure that the password matches!");
+                    valid = false;
+                }
+
+                if (!valid) return; // stop execution if invalid
+
+                email = emailF;
+                password = passwordF;
+                User user = new User(name, familyname, email, password);
+                createUser(user);
             } else {
                 Toast.makeText(this, "Please fill in all fields in the form!", Toast.LENGTH_SHORT).show();
             }
@@ -109,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             ((RegistrationPage2) page).formError(form_id, message);
         }
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     public void createUser(User user) {
