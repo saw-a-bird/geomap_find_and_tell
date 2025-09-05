@@ -105,3 +105,5 @@ The app is designed to help communities **collaboratively locate and share resou
   }
 }
 ```
+
+Other than this, you'll need three keys (in .local.properties) to initialize the firebase `MAPS_API_KEY` `MAPS_APP_ID` `MAPS_APP_URL`
