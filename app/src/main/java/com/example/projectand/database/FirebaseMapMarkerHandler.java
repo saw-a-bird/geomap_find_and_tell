@@ -10,7 +10,6 @@ import java.util.Map;
 public class FirebaseMapMarkerHandler {
     private DatabaseReference dataBase;
     private static final String TABLE_MARKERS = "markers";
-    private static final String TABLE_USER_MARKERS = "user-markers";
 
     public FirebaseMapMarkerHandler() {
         this.dataBase = FirebaseDatabase.getInstance().getReference();
@@ -25,8 +24,6 @@ public class FirebaseMapMarkerHandler {
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put("/"+ TABLE_MARKERS +"/" + mapMarker.getCountry() + "/" + mapMarker.getCategoryId() + "/" + key, postValues);
-        childUpdates.put("/"+ TABLE_USER_MARKERS + "/" + mapMarker.getCreatorId() + "/" + key, postValues);
-
         dataBase.updateChildren(childUpdates);
     }
 

@@ -10,7 +10,7 @@ The app is designed to help communities **collaboratively locate and share resou
 
 ## ⚙️ Technologies Used
 
-- **Firebase Realtime Database** – cloud-based backend for storing and syncing user data  
+- **Firebase Realtime Database** – cloud-based backend for storing and syncing user data (secured as much as possible... had fun with the security rules.)
 - **Google Maps API** – for displaying and interacting with map markers  
 - **Android SDK** – `compileSdkVersion 32`  
 - **Java (OpenJDK 11.0.2, 2019-01-15)** – primary programming language  
